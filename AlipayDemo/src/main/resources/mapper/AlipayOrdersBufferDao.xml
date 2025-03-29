@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zjc.starless.alipaydemo.mapper.AlipayOrdersBufferDao">
+
+    <resultMap type="zjc.starless.alipaydemo.model.AlipayOrdersBuffer" id="AlipayOrdersBufferMap">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="outTradeNo" column="out_trade_no" jdbcType="VARCHAR"/>
+        <result property="tradeNo" column="trade_no" jdbcType="VARCHAR"/>
+        <result property="buyerId" column="buyer_id" jdbcType="BIGINT"/>
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT"/>
+        <result property="invoiceAmount" column="invoice_amount" jdbcType="BIGINT"/>
+        <result property="tradeStatus" column="trade_status" jdbcType="VARCHAR"/>
+        <result property="notifyId" column="notify_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="subject" column="subject" jdbcType="VARCHAR"/>
+        <result property="body" column="body" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="OrderBufferBase">
+        select *
+        from alipay_orders_buffer;
+    </sql>
+
+    <update id="updateOrderBuffer" parameterType="zjc.starless.alipaydemo.model.AlipayOrdersBuffer">
+        update alipay_orders_buffer
+        <set>
+            <if test="tradeNo != null">
+                trade_no = #{tradeNo},
+            </if>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId},
+            </if>
+            <if test="invoiceAmount != null">
+                invoice_amount = #{invoiceAmount},
+            </if>
+            <if test="tradeStatus != null">
+                trade_status = #{tradeStatus},
+            </if>
+            <if test="notifyId != null">
+                notify_id = #{notifyId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where out_trade_no = #{outTradeNo}
+    </update>
+
+    <select id="selectOrderBufferList" resultMap="AlipayOrdersBufferMap">
+        <include refid="OrderBufferBase"/>
+    </select>
+</mapper>
+
